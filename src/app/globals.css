@@ -215,6 +215,222 @@ a:focus-visible {
 .button-outline:hover { transform: translateY(-2px) rotate(-1deg); background: var(--color-brick); color: var(--color-paper); }
 .button-outline:active { transform: translateY(0) scale(.98); }
 
+
+.jurusan-node {
+  position: absolute;
+  z-index: 8;
+  display: block;
+  width: 42px;
+  height: 42px;
+  transform: translate(-50%, -50%);
+  color: var(--color-paper);
+  text-decoration: none;
+  transition:
+    transform 220ms cubic-bezier(.22, 1, .36, 1),
+    filter 220ms ease;
+}
+
+.jurusan-node:hover,
+.jurusan-node:focus-visible,
+.jurusan-node.is-active {
+  z-index: 20;
+  transform: translate(-50%, -50%) scale(1.12);
+  filter: drop-shadow(0 0 12px rgb(255 248 241 / .75));
+}
+
+.jurusan-node-orbit {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(255 248 241 / .7);
+  border-radius: 50%;
+  background: rgb(53 21 28 / .28);
+  box-shadow:
+    0 0 0 5px rgb(255 248 241 / .12),
+    0 5px 14px rgb(53 21 28 / .35);
+  backdrop-filter: blur(4px);
+}
+
+.jurusan-node-orbit::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 1px solid rgb(255 248 241 / .3);
+  border-radius: 50%;
+}
+
+.jurusan-node-orbit::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  right: -3px;
+  top: 4px;
+  border-radius: 50%;
+  background: var(--color-brick-lighter);
+  box-shadow: 0 0 8px var(--color-brick-lighter);
+}
+
+.jurusan-node-core {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: var(--color-paper);
+  color: var(--color-brick);
+}
+
+.jurusan-node-logo {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  filter: none;
+}
+
+.jurusan-node-label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 13px);
+  width: max-content;
+  max-width: 190px;
+  padding: .38rem .58rem;
+  border: 1px solid rgb(255 248 241 / .4);
+  background: rgb(53 21 28 / .9);
+  color: var(--color-paper);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: .58rem;
+  letter-spacing: .035em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -5px);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.jurusan-node-code {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 5px);
+  padding: .14rem .32rem;
+  border: 1px solid rgb(255 248 241 / .55);
+  background: rgb(53 21 28 / .72);
+  color: var(--color-paper);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: .58rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  line-height: 1;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.jurusan-node-label {
+  top: calc(100% + 30px);
+}
+
+.jurusan-node-label::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-top: 1px solid rgb(255 248 241 / .4);
+  border-left: 1px solid rgb(255 248 241 / .4);
+  background: rgb(53 21 28 / .9);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.jurusan-node-label strong {
+  color: var(--color-brick-lighter);
+  font-size: .72rem;
+  letter-spacing: .1em;
+}
+
+.jurusan-node:hover .jurusan-node-label,
+.jurusan-node:focus-visible .jurusan-node-label,
+.jurusan-node.is-active .jurusan-node-label {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 767px) {
+  .jurusan-node {
+    transform: translate(-50%, -50%) scale(.82);
+  }
+
+  .jurusan-node-code { font-size: .55rem; }
+  .jurusan-node-label { display: none; }
+
+  .jurusan-node:hover,
+  .jurusan-node:focus-visible,
+  .jurusan-node.is-active {
+    transform: translate(-50%, -50%) scale(.94);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jurusan-node,
+  .jurusan-node-label { transition: none; }
+}
+
+.jurusan-trails {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.jurusan-trails.is-scroll-started {
+  opacity: 1;
+}
+
+.jurusan-trail,
+.jurusan-trail-glow {
+  fill: none;
+  stroke: var(--color-brick-lighter);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.jurusan-trail { stroke-width: 1.25; opacity: .68; }
+.jurusan-trail-glow { stroke-width: 6; opacity: .12; filter: blur(3px); }
+.jurusan-trail-head { fill: var(--color-paper); filter: drop-shadow(0 0 5px var(--color-brick-lighter)); }
+
+.jurusan-shard {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgb(255 248 241 / .45);
+  background: rgb(247 217 216 / .12);
+  clip-path: polygon(50% 0, 100% 25%, 78% 100%, 22% 88%, 0 30%);
+  opacity: .55;
+  transition: opacity 260ms ease, filter 260ms ease, background-color 260ms ease;
+}
+
+.jurusan-shard img { width: 26px; height: 26px; object-fit: contain; filter: brightness(0) invert(1); opacity: .7; }
+.jurusan-shard.is-trail-active { opacity: 1; filter: drop-shadow(0 0 12px var(--color-brick-lighter)); background: rgb(247 217 216 / .32); }
+.jurusan-shard.is-trail-active img { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .jurusan-trail-head { display: none; }
+  .jurusan-shard { transition: none; }
+  .jurusan-trails { transition: none; }
+}
+
 @media (max-width: 767px) {
   html {
     scroll-behavior: auto;

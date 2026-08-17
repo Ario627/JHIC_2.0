@@ -1,6 +1,10 @@
-import { ScrollReveal } from "./ScrollReveal";
+"use client";
 
-export function ProfileSection() {
+import { ScrollReveal } from "./ScrollReveal";
+import Image from "next/image";
+import { jurusanTrails, registerShard } from "./jurusanTrail";
+
+export default function ProfileSection() {
   return (
     <ScrollReveal><section id="profil" className="mx-auto w-[min(1180px,calc(100%-3rem))] py-[clamp(5rem,12vw,11rem)]">
       <div className="section-kicker"><span className="text-brick-light">02</span><span>Profil sekolah</span></div>
@@ -10,6 +14,7 @@ export function ProfileSection() {
             <div className="gradient-brick absolute left-[5%] right-[-10%] top-[35%] h-px -rotate-12" />
             <div className="gradient-brick absolute left-[-8%] right-[8%] top-[58%] h-px -rotate-12" />
             <div className="absolute bottom-[18%] right-[15%] h-[48%] w-[42%] border border-paper bg-[repeating-linear-gradient(90deg,transparent_0_18%,rgb(168_41_35/0.7)_18%_21%)]" />
+            {jurusanTrails.map((trail) => <span key={trail.id} ref={(element) => registerShard(trail.id, element)} className="jurusan-shard" style={{ top: trail.shard.top, left: trail.shard.left, transform: `translate(-50%, -50%) rotate(${trail.shard.rotate}deg)` }}><Image src={trail.logo} alt="" width={32} height={32} /></span>)}
             <span className="absolute bottom-5 left-5 font-mono text-[.65rem] uppercase tracking-[.12em] text-paper/70">Arsip / 01</span>
           </div>
           <p className="mt-4 grid gap-1 text-sm text-brick"><span className="font-mono text-[.68rem] uppercase tracking-[.08em] text-brick-light">Arsip ruang</span>Elemen visual akan diganti dengan foto sekolah terverifikasi.</p>

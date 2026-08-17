@@ -3,6 +3,7 @@
 import { useEffect, useState, type SyntheticEvent } from "react";
 import Image from "next/image";
 import { schoolImages } from "../../data/school";
+import { jurusanTrails, registerPin } from "./jurusanTrail";
 
 const slides = [
   { eyebrow: "Sekolah vokasi · Purwokerto", title: "Ruang untuk tumbuh.", description: "Belajar dengan tangan, pikiran, dan keberanian untuk melangkah lebih jauh.", cta: "Kenali sekolah kami", image: schoolImages.hero.drone, alt: "Gedung dan lingkungan SMKN 1 Purwokerto dilihat dari udara" },
@@ -13,6 +14,8 @@ const slides = [
 export function HeroSection() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [activePin, setActivePin] = useState<string | null>(null);
+
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -36,8 +39,64 @@ export function HeroSection() {
   return (
     <section id="awal" className="relative flex min-h-[92svh] items-end overflow-hidden bg-night text-paper md:min-h-svh" aria-label="Cerita tentang SMKN 1 Purwokerto">
       <div className="absolute inset-0" aria-hidden="true">
-        {slides.map((item, index) => <Image key={`${item.image}-${index}`} src={item.image} alt={item.alt} fill priority={index === 0} sizes="(max-width: 768px) 100vw, 68vw" className={`object-cover object-[center_38%] transition-opacity duration-700 ${index === activeSlide ? "opacity-100" : "opacity-0"} ${reducedMotion ? "duration-0" : ""}`} onError={hideBrokenImage} />)}
-        <div className="absolute inset-0 bg-linear-to-r from-night via-night/75 via-32% to-transparent md:inset-y-0 md:left-[32%] md:right-0 md:bg-linear-to-r md:via-night/80 md:via-38%" />
+        <div className="absolute inset-y-0 right-0 w-full md:right-[-4%] md:w-[74%]">
+          {slides.map((item, index) => (
+            <Image 
+              key={`${item.image}-${index}`}
+              src={item.image}
+              alt={item.alt}
+              fill
+              priority={index === 0}
+              sizes="(max-width: 768px) 100vw, 74vw"
+              className={`object-cover object-[center_38%] transition-opacity duration-700 ${
+                index === activeSlide ? "opacity-100" : "opacity-0"
+              } ${reducedMotion ? "duration-0" : ""}`}
+              onError={hideBrokenImage}
+            />
+          ))}
+
+          <div className="absolute inset-0 bg-brick/25 mix-blend-multiply" />
+          <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgb(255_248_241/.18)_1px,transparent_1px),linear-gradient(90deg,rgb(255_248_241/.18)_1px,transparent_1px)] bg-size-[56px_56px]" />
+        </div>
+
+        <div className="absolute inset-0 bg-linear-to-r from-night via-night/95 via-28% via-night/55 via-48% to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-night/90 via-night/25 to-transparent" />
+
+      </div>
+
+      <div className="absolute inset-0">
+        {jurusanTrails.map((pin) => (
+          <a
+            key={pin.id}
+            href="#jurusan"
+            className={`jurusan-node jurusan-node-${pin.pin.ukuran} ${
+              activePin === pin.id ? "is-active" : ""
+            }`}
+            ref={(element) => registerPin(pin.id, element)}
+            style={{ top: pin.pin.top, left: pin.pin.left }}
+            onMouseEnter={() => setActivePin(pin.id)}
+            onMouseLeave={() => setActivePin(null)}
+            onFocus={() => setActivePin(pin.id)}
+            onBlur={() => setActivePin(null)}
+            aria-label={`Lihat jurusan ${pin.nama}`}
+          >
+            <span className="jurusan-node-orbit">
+              <span className="jurusan-node-core">
+                <Image
+                  src={pin.logo}
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="jurusan-node-logo"
+                />
+              </span>
+            </span>
+
+            <span className="jurusan-node-code">{pin.kode}</span>
+            <span className="jurusan-node-label">{pin.nama}</span>
+          </a>
+        ))}
+
       </div>
       <div className="absolute inset-0 bg-linear-to-t from-night/90 via-night/25 to-transparent" />
       <div className="relative z-10 mx-auto w-[min(1240px,calc(100%-3rem))] pb-16 pt-36 md:pb-24">
